@@ -1,0 +1,154 @@
+-- --
+-- -- shortened version of the database creation: https://raw.githubusercontent.com/solution-pattern-cdc/cashback-db/main/contrib/sql/create.sql
+-- --
+--
+-- SET statement_timeout = 0;
+-- SET lock_timeout = 0;
+-- SET idle_in_transaction_session_timeout = 0;
+-- SET client_encoding = 'UTF8';
+-- SET standard_conforming_strings = on;
+-- SELECT pg_catalog.set_config('search_path', '', false);
+-- SET check_function_bodies = false;
+-- SET xmloption = content;
+-- SET client_min_messages = warning;
+-- SET row_security = off;
+--
+-- SET default_tablespace = '';
+--
+-- SET default_table_access_method = heap;
+--
+-- --
+-- -- TOC entry 204 (class 1259 OID 16401)
+-- -- Name: cashback; Type: TABLE; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- CREATE TABLE public.cashback (
+--                                  cashback_id bigint NOT NULL,
+--                                  customer_id bigint NOT NULL,
+--                                  amount numeric(8,2)
+-- );
+--
+-- -
+-- -- TOC entry 205 (class 1259 OID 16416)
+-- -- Name: cashback_id_seq; Type: SEQUENCE; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- CREATE SEQUENCE public.cashback_id_seq
+--     START WITH 1000
+--     INCREMENT BY 1
+--     NO MINVALUE
+--     NO MAXVALUE
+--     CACHE 1;
+--
+-- --
+-- -- TOC entry 2969 (class 0 OID 0)
+-- -- Dependencies: 205
+-- -- Name: cashback_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- ALTER SEQUENCE public.cashback_id_seq OWNED BY public.cashback.cashback_id;
+--
+-- --
+-- -- TOC entry 202 (class 1259 OID 16386)
+-- -- Name: customer; Type: TABLE; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- CREATE TABLE public.customer (
+--                                  customer_id bigint NOT NULL,
+--                                  name character varying(255) NOT NULL,
+--                                  status character varying(25) NOT NULL
+-- );
+--
+-- --
+-- -- TOC entry 203 (class 1259 OID 16391)
+-- -- Name: expense; Type: TABLE; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+-- CREATE TABLE public.expense (
+--                                 sale_id bigint NOT NULL,
+--                                 customer_id bigint NOT NULL,
+--                                 amount numeric(8,2) NOT NULL,
+--                                 earned_cashback numeric(8,2),
+--                                 date timestamp without time zone NOT NULL,
+--                                 cashback_id bigint
+-- );
+--
+-- --
+-- -- TOC entry 2824 (class 2604 OID 16418)
+-- -- Name: cashback cashback_id; Type: DEFAULT; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- ALTER TABLE ONLY public.cashback ALTER COLUMN cashback_id SET DEFAULT nextval('public.cashback_id_seq'::regclass);
+--
+-- --
+-- -- TOC entry 2830 (class 2606 OID 16405)
+-- -- Name: cashback cashback_pkey; Type: CONSTRAINT; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- ALTER TABLE ONLY public.cashback
+--     ADD CONSTRAINT cashback_pkey PRIMARY KEY (cashback_id);
+--
+-- --
+-- -- TOC entry 2826 (class 2606 OID 16390)
+-- -- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- ALTER TABLE ONLY public.customer
+--     ADD CONSTRAINT customer_pkey PRIMARY KEY (customer_id);
+--
+-- --
+-- -- TOC entry 2828 (class 2606 OID 16395)
+-- -- Name: expense sale_id_pkey; Type: CONSTRAINT; Schema: public; Owner: $POSTGRESQL_USER
+-- --
+--
+-- ALTER TABLE ONLY public.expense
+--     ADD CONSTRAINT sale_pkey PRIMARY KEY (sale_id);
+--
+-- commit;
+-- --
+-- -- PostgreSQL database dump complete
+--
+--
+-- -- data population
+-- --
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1000, 'K. Varela', 'Gold');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1001, 'A. Bernard', 'Diamond');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1002, 'B. Bernard', 'Silver');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1003, 'C. Bernard', 'Diamond');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1004, 'D. Bernard', 'Gold');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1005, 'E. Bernard', 'Diamond');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1006, 'F. Bernard', 'Silver');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1007, 'G. Bernard', 'Diamond');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1008, 'H. Bernard', 'Gold');
+-- INSERT INTO public.customer (customer_id, name, status) VALUES (1009, 'I. Bernard', 'Diamond');
+--
+--
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1001, 1000, 20.00, '2022-05-01 00:19:26.000000', 1000);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1002, 1000, 150.00, '2022-02-02 00:19:54.000000', 1001);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1003, 1002, 20.00, '2022-05-03 00:19:26.000000', 1000);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1004, 1003, 150.00, '2022-05-04 00:19:54.000000', 1001);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1005, 1004, 20.00, '2022-02-05 00:19:26.000000', 1002);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1006, 1005, 150.00, '2022-05-06 00:19:54.000000', 1003);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1007, 1006, 20.00, '2022-05-07 00:19:26.000000', 1004);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1008, 1007, 150.00, '2022-05-08 00:19:54.000000', 1005);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1009, 1008, 20.00, '2022-05-09 00:19:26.000000', 1006);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1010, 1009, 151.00, '2021-05-08 00:19:54.000000', 1007);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1011, 1000, 152.00, '2022-02-08 00:19:54.000000', 1008);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1012, 1001, 153.00, '2021-05-08 00:19:54.000000', 1009);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1013, 1002, 154.00, '2022-02-08 00:19:54.000000', 1010);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1014, 1005, 155.00, '2021-05-08 00:19:54.000000', 1011);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1015, 1006, 156.00, '2021-02-08 00:19:54.000000', 1012);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1016, 1007, 157.00, '2021-05-08 00:19:54.000000', 1013);
+-- INSERT INTO public.expense (sale_id, customer_id, amount, date, cashback_id) VALUES (1017, 1008, 158.00, '2021-02-08 00:19:54.000000', 1014);
+--
+--
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1000, 1000, 3.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1001, 1001, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1002, 1002, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1003, 1003, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1004, 1004, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1005, 1005, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1006, 1006, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1007, 1007, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1008, 1008, 15.00);
+-- INSERT INTO public.cashback (cashback_id, customer_id, amount) VALUES (1009, 1009, 15.00);
+-- commit;
