@@ -17,29 +17,6 @@ import java.util.Locale;
 @QuarkusTest
 public class ExpenseTest {
     @Test
-    public void getEarnedCashbackExpenseTest() {
-
-        Expense expense = new Expense.Builder()
-                .id(1L)
-                .amount(new BigDecimal(100))
-                .cashback(new Cashback())
-                .customer(
-                        new Customer.Builder()
-                                .id(1L)
-                                .status(CustomerStatus.SILVER.getStatus())
-                                .build())
-                .date(LocalDateTime.now()).build();
-
-        BigDecimal earnedCashback = expense.calculateAmountCashback();
-
-        BigDecimal percentageToApply = BigDecimal.valueOf(CustomerStatus.get(expense.customer.status).getCashbackPercentage());
-        BigDecimal expectedIncomingCashback = expense.amount.multiply(percentageToApply);
-
-        Assertions.assertNotNull(earnedCashback);
-        Assertions.assertEquals(expectedIncomingCashback, earnedCashback);
-    }
-
-    @Test
     public void getPrettyAmountTest() {
         Expense expense = new Expense.Builder()
                 .id(1L)

@@ -28,12 +28,11 @@ public class CustomerCustomResource {
                         @QueryParam("size") int pageSize,
                         @QueryParam("name") @DefaultValue("") String name) {
 
-        List<Customer> customerList;
         pageSize = (pageSize == 0) ? defaultPageSize : pageSize;
 
         logger.info("Searching for: "+name+" pageSize "+pageSize+" pageIndex "+pageIndex);
 
-        customerList = Customer.findAll(pageIndex, pageSize, name);
+        List<Customer> customerList = Customer.findAll(pageIndex, pageSize, name);
 
         logger.info("Returning a list of "+customerList.size()+ " customers.");
 
