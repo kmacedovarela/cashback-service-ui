@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.acme.cashback.Cashback;
 import org.acme.customer.Customer;
-import org.acme.customer.CustomerStatus;
 import org.acme.util.PrettyStringsUtil;
 
 import javax.persistence.*;
@@ -46,18 +45,6 @@ public class Expense extends PanacheEntityBase {
     }
 
     public Expense(){}
-
-    public void updateEarnedCashbackValue()  {
-        Expense expense = this.isPersistent() ? this : findById(sale_id);
-        expense.earnedCashback = calculateAmountCashback();
-        persist(expense);
-    }
-
-    public BigDecimal calculateAmountCashback(){
-        BigDecimal percentage = BigDecimal.valueOf(CustomerStatus.get(this.customer.status).getCashbackPercentage());
-        BigDecimal earnedCashback = percentage.multiply(this.getAmount());
-        return earnedCashback;
-    }
 
     public String getPrettyEarnedCashback(){
         return PrettyStringsUtil.formatMoney(getEarnedCashback());
