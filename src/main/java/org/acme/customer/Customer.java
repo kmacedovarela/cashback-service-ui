@@ -25,8 +25,7 @@ public class Customer extends PanacheEntityBase {
     public String name;
     public String status;
 
-    @OneToOne
-    @JoinColumn(name = "customer_id")
+    @OneToOne(mappedBy="customer")
     public Cashback cashback;
 
     @OneToMany(mappedBy = "customer")
